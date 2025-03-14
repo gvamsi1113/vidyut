@@ -17,32 +17,22 @@ const Header: React.FC<HeaderProps> = ({ toggleMenu, onStart, onReset, isPlaying
         <button onClick={toggleMenu} className={styles.menuButton}>
           MENU
         </button>
-        <h1 className={styles.title}>RETRO CODE EXPLORER</h1>
       </div>
-      
+      <h1 className={styles.title}>VIDYUT - PHYSICS CONCEPTS in RETRO</h1>
+
       <div className={styles.rightSection}>
-        <button
-          onClick={onStart}
-          className={styles.startButton}
-          disabled={isPlaying}
-        >
-          START
-        </button>
-        <button
-          onClick={onReset}
-          className={styles.resetButton}
-        >
-          RESET
-        </button>
-
-        <h1 className={styles.title}>
-            VIDYUT
-        </h1>
-
+        {!isPlaying ? (
+          <button onClick={onStart} className={styles.startButton}>
+            START
+          </button>
+        ) : (
+          <button onClick={onReset} className={styles.resetButton}>
+            RESET
+          </button>
+        )}
       </div>
-        
     </header>
   );
 };
 
-export default Header; 
+export default Header;

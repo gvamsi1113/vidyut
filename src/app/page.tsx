@@ -33,6 +33,11 @@ export default function Home() {
     setTimeout(() => setIsPlaying(true), 100);
   };
 
+  const handleSketchChange = (sketch: Sketch) => {
+    setActiveSketch(sketch);
+    setIsPlaying(false);
+  };
+
   return (
     <main className="main">
         <Header toggleMenu={toggleMenu} onStart={handleStart} onReset={handleReset} isPlaying={isPlaying} />
@@ -41,7 +46,7 @@ export default function Home() {
           <SideMenu
             sketches={SKETCHES}
             activeSketch={activeSketch}
-            setActiveSketch={setActiveSketch}
+            setActiveSketch={handleSketchChange}
             isOpen={menuOpen}
             toggleMenu={toggleMenu}
           />
