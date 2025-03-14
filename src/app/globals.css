@@ -24,3 +24,25 @@ body {
 .font-pixel {
   font-family: 'Press Start 2P', cursive;
 }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background-color: #121212;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}

@@ -1,6 +1,14 @@
 .footer {
-  text-align: center;
-  margin-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1a1a2e;
+  border-top: 2px solid #00ddff;
+  padding: 10px 20px;
+  height: 40px; /* Fixed height */
+  font-size: 12px;
+  color: #9ca3af;
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 .footerText {

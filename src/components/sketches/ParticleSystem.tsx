@@ -1,10 +1,16 @@
-// src/components/sketches/ParticleSystem.tsx
+// src/components/sketches/ParticleSystem.tsx - Final fixed version
 'use client';
 
 import React from 'react';
 import p5 from 'p5';
 import { ControlSettings } from '@/types';
-import P5Wrapper from './P5Wrapper';
+import P5Wrapper from './P5Wrapper/P5Wrapper';
+import { 
+  createSketch, 
+  createSliderControl, 
+  createToggleControl,
+  SketchContext
+} from '@/utils/p5SketchSystem';
 
 interface Particle {
   position: p5.Vector;
@@ -20,157 +26,234 @@ interface Particle {
   isDead: () => boolean;
 }
 
+interface ParticleSystemSettings {
+  maxSpeed: number;
+  particleCount: number;
+  baseSize: number;
+  particles: Particle[];
+}
+
 const ParticleSystem: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
-  const createSketch = (p: p5) => {
-    const particles: Particle[] = [];
-    const particleCount = 50 + size * 10; // Number of particles based on size
-    const baseSize = 4 + size * 0.5; // Base particle size
-    const maxSpeed = 0.5 + speed * 0.2; // Max particle speed
-
-    // Particle class
-    class ParticleClass implements Particle {
-      position: p5.Vector;
-      velocity: p5.Vector;
-      acceleration: p5.Vector;
-      color: number[];
-      size: number;
-      life: number;
-
-      constructor() {
-        this.position = p.createVector(p.random(p.width), p.random(p.height));
-        this.velocity = p.createVector(
-          p.random(-maxSpeed, maxSpeed),
-          p.random(-maxSpeed, maxSpeed)
-        );
-        this.acceleration = p.createVector(0, 0);
-        this.color = [p.random(100, 255), p.random(100, 255), p.random(100, 255)];
-        this.size = p.random(baseSize * 0.5, baseSize * 1.5);
-        this.life = p.random(100, 200);
+  const sketch = createSketch(
+    { 
+      speed, 
+      size,
+      controlPanel: {
+        theme: 'retro',
+        position: 'bottom-left',
+        title: 'PARTICLE SYSTEM'
       }
+    },
+    // Setup function
+    (ctx: SketchContext) => {
+      const { p, controlPanel, settings } = ctx;
+      
+      // Create Particle class with explicit type
+      const ParticleClass = class implements Particle {
+        position: p5.Vector;
+        velocity: p5.Vector;
+        acceleration: p5.Vector;
+        color: number[];
+        size: number;
+        life: number;
+        maxSpeed: number;
 
-      update() {
-        this.velocity.add(this.acceleration);
-        this.position.add(this.velocity);
-        this.acceleration.mult(0);
-        this.life -= 1;
-      }
-
-      applyForce(force: p5.Vector) {
-        this.acceleration.add(force);
-      }
-
-      edges() {
-        if (this.position.x > p.width) {
-          this.position.x = 0;
+        constructor(maxSpeed: number, baseSize: number) {
+          this.maxSpeed = maxSpeed;
+          this.position = p.createVector(p.random(p.width), p.random(p.height));
+          this.velocity = p.createVector(
+            p.random(-this.maxSpeed, this.maxSpeed),
+            p.random(-this.maxSpeed, this.maxSpeed)
+          );
+          this.acceleration = p.createVector(0, 0);
+          this.color = [p.random(100, 255), p.random(100, 255), p.random(100, 255)];
+          this.size = p.random(baseSize * 0.5, baseSize * 1.5);
+          this.life = p.random(100, 200);
         }
-        if (this.position.x < 0) {
-          this.position.x = p.width;
+
+        update() {
+          this.velocity.add(this.acceleration);
+          this.position.add(this.velocity);
+          this.acceleration.mult(0);
+          this.life -= 1;
         }
-        if (this.position.y > p.height) {
-          this.position.y = 0;
+
+        applyForce(force: p5.Vector) {
+          this.acceleration.add(force);
         }
-        if (this.position.y < 0) {
-          this.position.y = p.height;
-        }
-      }
 
-      display(p: p5) {
-        const alpha = p.map(this.life, 0, 200, 0, 255);
-        p.noStroke();
-        p.fill(this.color[0], this.color[1], this.color[2], alpha);
-        p.circle(this.position.x, this.position.y, this.size);
-
-        // Add glow effect
-        p.drawingContext.shadowBlur = 10;
-        p.drawingContext.shadowColor = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${alpha / 255})`;
-      }
-
-      // Method to check if particle is "dead"
-      isDead() {
-        return this.life <= 0;
-      }
-    }
-
-    p.setup = () => {
-      p.createCanvas(p.windowWidth, p.windowHeight);
-
-      // Initialize particles
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new ParticleClass());
-      }
-    };
-
-    p.draw = () => {
-      p.background(0, 20); // Black with trail effect
-
-      // Create mouse force when mouse is pressed
-      if (
-        p.mouseIsPressed &&
-        p.mouseX > 0 &&
-        p.mouseY > 0 &&
-        p.mouseX < p.width &&
-        p.mouseY < p.height
-      ) {
-        const mousePos = p.createVector(p.mouseX, p.mouseY);
-
-        // Draw attraction point
-        p.noFill();
-        p.stroke(255);
-        p.ellipse(p.mouseX, p.mouseY, 30, 30);
-
-        particles.forEach((particle) => {
-          const force = p5.Vector.sub(mousePos, particle.position);
-          const distance = force.mag();
-          force.normalize();
-
-          // Stronger force for closer particles
-          const strength = (50 / (distance + 10)) * 0.5;
-          force.mult(strength);
-
-          particle.applyForce(force);
-        });
-      }
-
-      // Update and display particles
-      for (let i = particles.length - 1; i >= 0; i--) {
-        particles[i].update();
-        particles[i].edges();
-        particles[i].display(p);
-
-        // Remove dead particles and replace them
-        if (particles[i].isDead()) {
-          particles.splice(i, 1);
-          particles.push(new ParticleClass());
-        }
-      }
-
-      // Draw connection lines between nearby particles
-      p.stroke(255, 50);
-      p.strokeWeight(0.5);
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const d = p5.Vector.dist(particles[i].position, particles[j].position);
-          if (d < 50) {
-            const alpha = p.map(d, 0, 50, 100, 0);
-            p.stroke(255, alpha);
-            p.line(
-              particles[i].position.x,
-              particles[i].position.y,
-              particles[j].position.x,
-              particles[j].position.y
-            );
+        edges() {
+          if (this.position.x > p.width) {
+            this.position.x = 0;
+          }
+          if (this.position.x < 0) {
+            this.position.x = p.width;
+          }
+          if (this.position.y > p.height) {
+            this.position.y = 0;
+          }
+          if (this.position.y < 0) {
+            this.position.y = p.height;
           }
         }
+
+        display(p: p5) {
+          const alpha = p.map(this.life, 0, 200, 0, 255);
+          p.noStroke();
+          p.fill(this.color[0], this.color[1], this.color[2], alpha);
+          p.circle(this.position.x, this.position.y, this.size);
+
+          // Add glow effect
+          p.drawingContext.shadowBlur = 10;
+          p.drawingContext.shadowColor = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${alpha / 255})`;
+        }
+
+        isDead() {
+          return this.life <= 0;
+        }
+      };
+      
+      // Initialize particle system
+      const particleSystem: ParticleSystemSettings = {
+        maxSpeed: 0.5 + (settings?.speed ?? 5) * 0.2,
+        particleCount: 50 + (settings?.size ?? 5) * 10,
+        baseSize: 4 + (settings?.size ?? 5) * 0.5,
+        particles: []
+      };
+      // Create initial particles
+      for (let i = 0; i < particleSystem.particleCount; i++) {
+        particleSystem.particles.push(
+          new ParticleClass(particleSystem.maxSpeed, particleSystem.baseSize)
+        );
       }
-    };
+      
+      // Register particle system and constructor for later use
+      ctx.registerControl('particleSystem', particleSystem);
+      ctx.registerControl('ParticleClass', ParticleClass);
+      
+      // Create UI controls
+      if (controlPanel) {
+        // Speed control
+        const speedControl = createSliderControl(
+          p,
+          controlPanel,
+          'PARTICLE SPEED',
+          0.1,
+          2,
+          particleSystem.maxSpeed,
+          0.1,
+          val => val.toFixed(1),
+          value => {
+            particleSystem.maxSpeed = value;
+          }
+        );
+        
+        // Count control
+        const countControl = createSliderControl(
+          p,
+          controlPanel,
+          'PARTICLE COUNT',
+          20,
+          200,
+          particleSystem.particleCount,
+          10,
+          val => val.toFixed(0),
+          value => {
+            particleSystem.particleCount = value;
+            
+            // Adjust particle count (add or remove)
+            const ParticleConstructor = ctx.getControl<typeof ParticleClass>('ParticleClass');
+            if (ParticleConstructor) {
+              // Add more particles if needed
+              while (particleSystem.particles.length < particleSystem.particleCount) {
+                particleSystem.particles.push(
+                  new ParticleConstructor(particleSystem.maxSpeed, particleSystem.baseSize)
+                );
+              }
+              
+              // Remove particles if needed
+              if (particleSystem.particles.length > particleSystem.particleCount) {
+                particleSystem.particles.length = particleSystem.particleCount;
+              }
+            }
+          }
+        );
+        
+        // Toggle button
+        const toggleControls = createToggleControl(
+          p,
+          controlPanel,
+          'HIDE CONTROLS',
+          'SHOW CONTROLS',
+          true,
+          [
+            speedControl.slider,
+            speedControl.labelEl,
+            countControl.slider,
+            countControl.labelEl
+          ]
+        );
+        
+        // Register controls
+        ctx.registerControl('speedControl', speedControl);
+        ctx.registerControl('countControl', countControl);
+        ctx.registerControl('toggleControls', toggleControls);
+      }
+    },
+    
+    // Draw function
+    (ctx: SketchContext) => {
+      const { p } = ctx;
+      const particleSystem = ctx.getControl<ParticleSystemSettings>('particleSystem');
+      const ParticleClass = ctx.getControl<new (maxSpeed: number, baseSize: number) => Particle>('ParticleClass');
+      
+      if (!particleSystem || !ParticleClass) return;
+      
+      // Background with trail effect
+      p.background(0, 40);
+      
+      // Create a force towards the mouse when pressed
+      if (p.mouseIsPressed) {
+        const mouseForce = p.createVector(p.mouseX, p.mouseY);
+        
+        for (const particle of particleSystem.particles) {
+          // Calculate direction from particle to mouse
+          const force = p5.Vector.sub(mouseForce, particle.position);
+          force.normalize();
+          force.mult(0.5); // Strength of attraction
+          
+          // Apply force to particle
+          particle.applyForce(force);
+        }
+      }
+      
+      // Update and display particles
+      for (let i = particleSystem.particles.length - 1; i >= 0; i--) {
+        particleSystem.particles[i].update();
+        particleSystem.particles[i].edges();
+        particleSystem.particles[i].display(p);
+        
+        // Replace dead particles
+        if (particleSystem.particles[i].isDead()) {
+          particleSystem.particles[i] = new ParticleClass(
+            particleSystem.maxSpeed, 
+            particleSystem.baseSize
+          );
+        }
+      }
+      
+      // Display info
+      p.fill(255);
+      p.noStroke();
+      p.textSize(12);
+      p.textAlign(p.LEFT);
+      p.text(`Particles: ${particleSystem.particles.length}`, 20, 30);
+      p.text(`FPS: ${p.frameRate().toFixed(0)}`, 20, 50);
+      p.text(`Click and drag to attract particles`, 20, 70);
+    }
+  );
 
-    // Handle window resize
-    p.windowResized = () => {
-      p.resizeCanvas(p.windowWidth, p.windowHeight);
-    };
-  };
-
-  return <P5Wrapper sketch={createSketch} />;
+  return <P5Wrapper sketch={sketch} />;
 };
 
 export default ParticleSystem;

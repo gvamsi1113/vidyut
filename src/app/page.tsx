@@ -1,13 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import ConsoleFrame from '@/components/ConsoleFrame/ConsoleFrame';
 import Header from '@/components/Header/Header';
 import SideMenu from '@/components/SideMenu/SideMenu';
 import GameScreen from '@/components/GameScreen/GameScreen';
-import ControlPanel from '@/components/ControlPanel/ControlPanel';
 import Footer from '@/components/Footer/Footer';
-import { Sketch, ControlSettings } from '@/types';
+import { Sketch } from '@/types';
 import './retro-effects.css';
 import './globals.css';
 
@@ -23,10 +21,6 @@ export default function Home() {
   const [activeSketch, setActiveSketch] = useState<Sketch>(SKETCHES[0]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [controls, setControls] = useState<ControlSettings>({
-    speed: 5,
-    size: 5,
-  });
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -41,8 +35,7 @@ export default function Home() {
 
   return (
     <main className="main">
-      <ConsoleFrame>
-        <Header toggleMenu={toggleMenu} />
+        <Header toggleMenu={toggleMenu} onStart={handleStart} onReset={handleReset} isPlaying={isPlaying} />
 
         <div className="content">
           <SideMenu
@@ -53,18 +46,10 @@ export default function Home() {
             toggleMenu={toggleMenu}
           />
 
-          <GameScreen activeSketch={activeSketch} controls={controls} isPlaying={isPlaying} />
+          <GameScreen activeSketch={activeSketch} isPlaying={isPlaying} />
         </div>
 
-        <ControlPanel
-          activeSketch={activeSketch}
-          controls={controls}
-          setControls={setControls}
-          onStart={handleStart}
-          onReset={handleReset}
-        />
         <Footer />
-      </ConsoleFrame>
     </main>
   );
 }

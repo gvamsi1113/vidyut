@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Sketch, ControlSettings } from '@/types';
 import styles from './GameScreen.module.css';
@@ -21,11 +21,10 @@ const SKETCH_COMPONENTS: Record<string, React.ComponentType<ControlSettings>> = 
 
 interface GameScreenProps {
   activeSketch: Sketch;
-  controls: ControlSettings;
   isPlaying: boolean;
 }
 
-const GameScreen: React.FC<GameScreenProps> = ({ activeSketch, controls, isPlaying }) => {
+const GameScreen: React.FC<GameScreenProps> = ({ activeSketch, isPlaying }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Handle sketch loading
@@ -54,7 +53,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ activeSketch, controls, isPlayi
       );
     }
 
-    return <SketchComponent {...controls} />;
+    return <SketchComponent />;
   };
 
   return (
