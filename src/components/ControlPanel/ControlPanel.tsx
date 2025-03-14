@@ -1,6 +1,11 @@
-// src/components/ControlPanel.tsx
 import React, { useState, useEffect } from 'react';
 import { Sketch, ControlSettings } from '@/types';
+import styles from './ControlPanel.module.css';
+
+interface ControlLabels {
+  speed: string;
+  size: string;
+}
 
 interface ControlPanelProps {
   activeSketch: Sketch;
@@ -8,11 +13,6 @@ interface ControlPanelProps {
   setControls: (controls: ControlSettings) => void;
   onStart: () => void;
   onReset: () => void;
-}
-
-interface ControlLabels {
-  speed: string;
-  size: string;
 }
 
 const ControlPanel: React.FC<ControlPanelProps> = ({
@@ -78,12 +78,12 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   };
 
   return (
-    <div className="bg-zinc-800 p-4 border-t-2 border-zinc-700 flex justify-between items-center flex-wrap gap-4">
-      <div className="w-full md:w-auto">
-        <h3 className="font-pixel text-yellow-300 text-xs mb-2">{activeSketch.title} CONTROLS</h3>
-        <div className="flex flex-wrap gap-6">
-          <div className="flex flex-col gap-1">
-            <label className="font-pixel text-[10px] text-gray-300">
+    <div className={styles.controlPanel}>
+      <div className={styles.controlsContainer}>
+        <h3 className={styles.controlsTitle}>{activeSketch.title} CONTROLS</h3>
+        <div className={styles.sliderContainer}>
+          <div className={styles.sliderGroup}>
+            <label className={styles.sliderLabel}>
               {controlLabels.speed}: {controls.speed}
             </label>
             <input
@@ -92,11 +92,11 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
               max="10"
               value={controls.speed}
               onChange={handleSpeedChange}
-              className="w-32 accent-pink-600"
+              className={styles.speedSlider}
             />
           </div>
-          <div className="flex flex-col gap-1">
-            <label className="font-pixel text-[10px] text-gray-300">
+          <div className={styles.sliderGroup}>
+            <label className={styles.sliderLabel}>
               {controlLabels.size}: {controls.size}
             </label>
             <input
@@ -105,22 +105,22 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
               max="10"
               value={controls.size}
               onChange={handleSizeChange}
-              className="w-32 accent-cyan-500"
+              className={styles.sizeSlider}
             />
           </div>
         </div>
       </div>
 
-      <div className="flex gap-3">
+      <div className={styles.buttonContainer}>
         <button
           onClick={onStart}
-          className="bg-pink-600 hover:bg-pink-700 text-white font-pixel py-2 px-4 rounded text-sm transition-colors duration-200"
+          className={styles.startButton}
         >
           START
         </button>
         <button
           onClick={onReset}
-          className="bg-cyan-500 hover:bg-cyan-600 text-black font-pixel py-2 px-4 rounded text-sm transition-colors duration-200"
+          className={styles.resetButton}
         >
           RESET
         </button>
@@ -129,4 +129,4 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   );
 };
 
-export default ControlPanel;
+export default ControlPanel; 

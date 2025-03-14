@@ -1,0 +1,14 @@
+.consoleFrame {
+  background-color: var(--console-bg);
+  box-sizing: border-box;
+  border: 8px solid #555;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 221, 255, 0.2);
+  padding: 1.25rem;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* overflow: hidden; */
+} 

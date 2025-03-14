@@ -1,0 +1,123 @@
+.controlPanel {
+  background-color: var(--panel-bg);
+  padding: 1rem;
+  border-top: 2px solid var(--console-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.controlsContainer {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .controlsContainer {
+    width: auto;
+  }
+}
+
+.controlsTitle {
+  font-family: 'Press Start 2P', cursive;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.sliderContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.sliderGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sliderLabel {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  color: #d1d5db; /* text-gray-300 */
+}
+
+.speedSlider, .sizeSlider {
+  width: 8rem;
+  height: 0.5rem;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #1f2937; /* dark gray */
+  outline: none;
+  border-radius: 0.25rem;
+}
+
+/* Slider thumb styles */
+.speedSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  background: var(--button-primary);
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.sizeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  background: var(--button-secondary);
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.speedSlider::-moz-range-thumb, .sizeSlider::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.speedSlider::-moz-range-thumb {
+  background: var(--button-primary);
+}
+
+.sizeSlider::-moz-range-thumb {
+  background: var(--button-secondary);
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.startButton, .resetButton {
+  font-family: 'Press Start 2P', cursive;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.startButton {
+  background-color: var(--button-primary);
+  color: white;
+}
+
+.startButton:hover {
+  background-color: #cc0052; /* darker pink */
+}
+
+.resetButton {
+  background-color: var(--button-secondary);
+  color: black;
+}
+
+.resetButton:hover {
+  background-color: #00b3cc; /* darker cyan */
+} 

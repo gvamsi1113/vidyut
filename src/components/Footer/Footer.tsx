@@ -1,14 +1,14 @@
-// src/components/Footer.tsx
 import React from 'react';
+import styles from './Footer.module.css';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="text-center mt-3">
-      <p className="font-pixel text-[8px] text-gray-500">
+    <footer className={styles.footer}>
+      <p className={styles.footerText}>
         © {new Date().getFullYear()} VIDYUT - INTERACTIVE CODE EXPLORER
       </p>
     </footer>
   );
 };
 
-export default Footer;
+export default Footer; 

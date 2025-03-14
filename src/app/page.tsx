@@ -1,14 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import ConsoleFrame from '@/components/ConsoleFrame';
-import Header from '@/components/Header';
-import SideMenu from '@/components/SideMenu';
-import GameScreen from '@/components/GameScreen';
-import ControlPanel from '@/components/ControlPanel';
-import Footer from '@/components/Footer';
+import ConsoleFrame from '@/components/ConsoleFrame/ConsoleFrame';
+import Header from '@/components/Header/Header';
+import SideMenu from '@/components/SideMenu/SideMenu';
+import GameScreen from '@/components/GameScreen/GameScreen';
+import ControlPanel from '@/components/ControlPanel/ControlPanel';
+import Footer from '@/components/Footer/Footer';
 import { Sketch, ControlSettings } from '@/types';
 import './retro-effects.css';
+import './globals.css';
 
 // Sample sketch data
 const SKETCHES: Sketch[] = [
@@ -39,11 +40,11 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-black">
+    <main className="main">
       <ConsoleFrame>
         <Header toggleMenu={toggleMenu} />
 
-        <div className="flex-1 relative">
+        <div className="content">
           <SideMenu
             sketches={SKETCHES}
             activeSketch={activeSketch}
