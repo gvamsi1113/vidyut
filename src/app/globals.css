@@ -1,31 +1,144 @@
+/* 
+ * Theme System for Retro Code Explorer
+ * Uses HSL color space for easier color relationships
+ */
+
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
-  
-  /* Add color variables based on your tailwind config */
-  --console-bg: #333;
-  --console-border: #555;
-  --screen-bg: #000;
-  --header-bg: #222;
-  --text-primary: #00ff00;
-  --text-secondary: #ffff00;
-  --button-primary: #ff0066;
-  --button-secondary: #00ddff;
-  --panel-bg: #444;
+  /* CORE THEME COLORS - ONLY CHANGE THESE 5 VARIABLES */
+  /* --hue-primary: 195; /* Primary accent color (cyan) */
+  /* --hue-secondary: 300; /* Secondary accent color (magenta) */
+  /* --hue-background: 240; /* Background color base hue */
+
+  --hue-primary: 160;
+  --hue-secondary: 390;
+  --hue-background: 270;
+  /*
+  CYBERPUNK THEME
+  --hue-primary: 160;
+  --hue-secondary: 320;
+  --hue-background: 270;
+
+  SUNSET THEME
+  --hue-primary: 35;
+  --hue-secondary: 330;
+  --hue-background: 220;
+
+  --hue-primary: 135;
+  --hue-secondary: 330;
+  --hue-background: 180;
+  */
+
+  --saturation-base: 95%; /* Base saturation for accent colors */
+  --lightness-base: 50%; /* Base lightness for accent colors */
+
+  /* AUTOMATICALLY GENERATED COLORS - DON'T CHANGE THESE */
+
+  /* Background Colors - Derived from hue-background */
+  --color-bg-primary: hsl(var(--hue-background), 50%, 7%);
+  --color-bg-secondary: hsl(var(--hue-background), 45%, 8%);
+  --color-bg-tertiary: hsla(var(--hue-background), 40%, 6%, 0.7);
+
+  /* Primary Accent (Cyan) - Derived from hue-primary */
+  --color-accent-primary: hsl(var(--hue-primary), var(--saturation-base), var(--lightness-base));
+  --color-accent-primary-light: hsl(
+    var(--hue-primary),
+    calc(var(--saturation-base) - 15%),
+    calc(var(--lightness-base) + 15%)
+  );
+  --color-accent-primary-dark: hsl(
+    var(--hue-primary),
+    var(--saturation-base),
+    calc(var(--lightness-base) - 15%)
+  );
+  --color-accent-primary-darker: hsl(
+    var(--hue-primary),
+    calc(var(--saturation-base) + 5%),
+    calc(var(--lightness-base) - 25%)
+  );
+
+  /* Secondary Accent (Magenta) - Derived from hue-secondary */
+  --color-accent-secondary: hsl(
+    var(--hue-secondary),
+    var(--saturation-base),
+    var(--lightness-base)
+  );
+  --color-accent-secondary-light: hsl(var(--hue-secondary), 80%, 70%);
+  --color-accent-secondary-dark: hsl(
+    var(--hue-secondary),
+    var(--saturation-base),
+    calc(var(--lightness-base) - 15%)
+  );
+  --color-accent-secondary-darker: hsl(
+    var(--hue-secondary),
+    calc(var(--saturation-base) + 5%),
+    calc(var(--lightness-base) - 25%)
+  );
+
+  /* Text Colors */
+  --color-text-primary: hsl(0, 0%, 100%);
+  --color-text-secondary: hsla(0, 0%, 100%, 0.7);
+  --color-text-muted: hsla(0, 0%, 100%, 0.5);
+  --color-text-black: hsl(0, 0%, 0%);
+
+  /* Blue gradient for title - Derived from hue-primary */
+  --color-blue-100: hsl(calc(var(--hue-primary) + 45), 100%, 50%);
+  --color-blue-200: hsl(calc(var(--hue-primary) + 40), 100%, 55%);
+  --color-blue-300: hsl(calc(var(--hue-primary) + 35), 100%, 60%);
+  --color-blue-400: hsl(calc(var(--hue-primary) + 30), 100%, 65%);
+  --color-blue-500: hsl(calc(var(--hue-primary) + 25), 100%, 70%);
+  --color-blue-600: hsl(calc(var(--hue-primary) + 15), 100%, 75%);
+  --color-blue-700: hsl(calc(var(--hue-primary) + 5), 100%, 80%);
+
+  /* UI Feedback Colors */
+  --color-success: hsl(142, 70%, 55%);
+  --color-warning: hsl(48, 95%, 53%);
+  --color-error: hsl(0, 84%, 70%);
+
+  /* Neutral Colors */
+  --color-neutral-100: hsl(0, 0%, 100%);
+  --color-neutral-200: hsl(220, 13%, 65%);
+  --color-neutral-300: hsl(218, 11%, 45%);
+  --color-neutral-700: hsl(240, 5%, 26%);
+  --color-neutral-900: hsla(0, 0%, 0%, 0.9);
+
+  /* Glow Effect Colors - Derived from accent colors */
+  --color-glow-primary: hsla(var(--hue-primary), 100%, 60%, 0.7);
+  --color-glow-primary-strong: hsla(var(--hue-primary), 100%, 70%, 0.9);
+  --color-glow-primary-medium: hsla(var(--hue-primary), 95%, 65%, 0.7);
+  --color-glow-primary-subtle: hsla(var(--hue-primary), 90%, 60%, 0.5);
+  --color-glow-primary-faint: hsla(var(--hue-primary), 85%, 55%, 0.3);
+
+  --color-glow-secondary: hsla(var(--hue-secondary), 100%, 60%, 0.7);
+  --color-glow-secondary-strong: hsla(var(--hue-secondary), 100%, 70%, 0.9);
+
+  /* Legacy variable names (for compatibility) */
+  --color-cyan-primary: var(--color-accent-primary);
+  --color-cyan-dark: var(--color-accent-primary-dark);
+  --color-cyan-darker: var(--color-accent-primary-darker);
+  --color-magenta-primary: var(--color-accent-secondary);
+  --color-magenta-light: var(--color-accent-secondary-light);
+  --color-magenta-dark: var(--color-accent-secondary-dark);
+  --color-magenta-darker: var(--color-accent-secondary-darker);
+
+  /* Shadow Effects */
+  --glow-cyan: 0 0 10px var(--color-accent-primary);
+  --glow-magenta: 0 0 10px var(--color-accent-secondary);
+  --glow-white: 0 0 10px var(--color-text-primary);
+  --glow-cyan-strong: 0 0 15px var(--color-accent-primary);
+  --glow-magenta-strong: 0 0 15px var(--color-accent-secondary);
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
-    rgb(var(--background-start-rgb));
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
 }
 
 .font-pixel {
   font-family: 'Press Start 2P', cursive;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -37,7 +150,7 @@ html, body {
   flex-direction: column;
   height: 100vh;
   width: 100vw;
-  background-color: #121212;
+  background-color: var(--color-bg-primary);
 }
 
 .content {
@@ -46,3 +159,32 @@ html, body {
   overflow: hidden;
   position: relative;
 }
+
+/* Example alternative themes - uncomment to use */
+
+/*
+  CYBERPUNK THEME
+:root {
+  --hue-primary: 160;
+  --hue-secondary: 320;
+  --hue-background: 270;
+}
+*/
+
+/*
+  SUNSET THEME
+:root {
+  --hue-primary: 35;
+  --hue-secondary: 330;
+  --hue-background: 220;
+}
+*/
+
+/*
+  MATRIX THEME
+:root {
+  --hue-primary: 135;
+  --hue-secondary: 330;
+  --hue-background: 180;
+}
+*/

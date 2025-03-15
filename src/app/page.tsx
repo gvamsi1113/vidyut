@@ -1,13 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import Header from '@/components/Header/Header';
-import SideMenu from '@/components/SideMenu/SideMenu';
-import GameScreen from '@/components/GameScreen/GameScreen';
-import Footer from '@/components/Footer/Footer';
+// import { useState } from 'react';
 import { Sketch } from '@/types';
-import './retro-effects.css';
-import './globals.css';
+// import BackgroundSketch from '@/components/HomePage/BackgroundSketch';
+import SketchGallery from '@/components/HomePage/SketchGallery';
+import styles from './page.module.css';
+import Link from 'next/link';
 
 // Sample sketch data
 const SKETCHES: Sketch[] = [
@@ -18,43 +16,50 @@ const SKETCHES: Sketch[] = [
 ];
 
 export default function Home() {
-  const [activeSketch, setActiveSketch] = useState<Sketch>(SKETCHES[0]);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-
-  const handleStart = () => {
-    setIsPlaying(true);
-  };
-
-  const handleReset = () => {
-    setIsPlaying(false);
-    setTimeout(() => setIsPlaying(true), 100);
-  };
-
-  const handleSketchChange = (sketch: Sketch) => {
-    setActiveSketch(sketch);
-    setIsPlaying(false);
-  };
-
   return (
-    <main className="main">
-        <Header toggleMenu={toggleMenu} onStart={handleStart} onReset={handleReset} isPlaying={isPlaying} />
+    <main className={styles.homepage}>
+      {/* <div className={styles.backgroundContainer}><BackgroundSketch /></div> */}
 
-        <div className="content">
-          <SideMenu
-            sketches={SKETCHES}
-            activeSketch={activeSketch}
-            setActiveSketch={handleSketchChange}
-            isOpen={menuOpen}
-            toggleMenu={toggleMenu}
-          />
+      {/* Global CRT effects */}
+      <div className={styles.scanLines}></div>
 
-          <GameScreen activeSketch={activeSketch} isPlaying={isPlaying} />
+      <div className={styles.content}>
+        <div className={styles.titleContainer}>
+          <h1 className={styles.title}>VIDYUT</h1>
+          <p className={styles.tagline}>RETRO GAMES THAT SPARK PHYSICS LEARNING!</p>
         </div>
 
-        <Footer />
+        <div className={styles.navigationLinks}>
+          <button className={`${styles.navButton} ${styles.accentButton}`}>CONTRIBUTE</button>
+          {/* <button className={`${styles.navButton} ${styles.tea}`}>DONATE</button> */}
+          <button className={`${styles.navButton} ${styles.accentButton}`}>CONTACT</button>
+        </div>
+
+        <div className={styles.sketchGalleryContainer}>
+          <SketchGallery sketches={SKETCHES} />
+        </div>
+      </div>
+
+      <footer className={styles.footer}>
+        <div className={styles.footerContent}>
+          <div className={styles.footerLeft}>
+            <h3 className={styles.footerLogo}>VIDYUT</h3>
+            <p className={styles.footerTagline}>Physics through Play</p>
+          </div>
+          <p className={styles.copyright}>© 2025 VIDYUT. All rights reserved.</p>
+          <div className={styles.footerRight}>
+            <Link href="#" className={styles.footerLink}>
+              GITHUB
+            </Link>
+            <Link href="#" className={styles.footerLink}>
+              DISCORD
+            </Link>
+            <Link href="#" className={styles.footerLink}>
+              TWITTER
+            </Link>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

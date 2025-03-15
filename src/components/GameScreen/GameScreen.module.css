@@ -4,6 +4,9 @@
   height: 100%; /* Take full height of parent */
   overflow: hidden;
   background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .gameScreen::before {

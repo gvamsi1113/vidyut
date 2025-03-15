@@ -58,7 +58,7 @@ export default [
       'no-console': 'warn',
       'prefer-const': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
-      'react/prop-types': 'warn',
+      'react/prop-types': 'off',
 
       // Disable some problematic rules for your codebase
       'no-undef': 'off', // TypeScript handles this

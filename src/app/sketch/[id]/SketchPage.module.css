@@ -1,0 +1,28 @@
+.sketchPage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #0c0c16;
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: calc(100vh - 100px);
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.5rem;
+  color: #00ddff;
+  background-color: #0c0c16;
+  text-shadow: 0 0 10px rgba(0, 221, 255, 0.7);
+}

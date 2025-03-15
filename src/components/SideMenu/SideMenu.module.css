@@ -4,13 +4,14 @@
   left: 0;
   height: 100%;
   width: 16rem; /* w-64 */
-  background-color: rgba(0, 0, 0, 0.9); /* bg-black/90 */
+  background-color: var(--color-neutral-900);
   z-index: 10;
   transition: transform 0.3s;
   transform: translateX(-100%);
   padding: 1rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .open {
@@ -24,22 +25,21 @@
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
   border-bottom: 20px solid var(--button-secondary);
-
 }
 
 .menuTitle {
   font-family: 'Press Start 2P', cursive;
   font-size: 0.875rem;
-  color: var(--button-secondary);
+  color: var(--color-cyan-primary);
 }
 
 .closeButton {
-  color: #9ca3af; /* text-gray-400 */
+  color: var(--color-neutral-200);
   font-size: 1.25rem;
 }
 
 .closeButton:hover {
-  color: white;
+  color: var(--color-text-primary);
 }
 
 .sketchList {
@@ -53,19 +53,19 @@
 
 .sketchItem {
   padding: 0.75rem;
-  border: 2px solid #3f3f46; /* border-zinc-700 */
+  border: 2px solid var(--color-neutral-700);
   border-radius: 0.25rem;
   cursor: pointer;
   transition: border-color 0.2s;
 }
 
 .sketchItem:hover:not(.activeSketch) {
-  border-color: #6b7280; /* border-gray-500 */
+  border-color: var(--color-neutral-300);
 }
 
 .activeSketch {
-  border-color: var(--button-primary);
-  background-color: rgba(255, 0, 102, 0.2); /* bg-pink-600/20 */
+  border-color: var(--color-magenta-primary);
+  background-color: rgba(255, 0, 102, 0.2);
 }
 
 .sketchInfo {
@@ -86,13 +86,13 @@
 }
 
 .easyDifficulty {
-  color: #4ade80; /* text-green-400 */
+  color: var(--color-success);
 }
 
 .mediumDifficulty {
-  color: #facc15; /* text-yellow-400 */
+  color: var(--color-warning);
 }
 
 .hardDifficulty {
-  color: #f87171; /* text-red-400 */
-} 
+  color: var(--color-error);
+}
