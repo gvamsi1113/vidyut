@@ -70,14 +70,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
   flex: 1;
   width: 100%;
+  gap: 1.5rem;
 }
 
 /* ===== TITLE STYLING ===== */
 .titleContainer {
   text-align: center;
-  height: 300px;
   perspective: 500px;
   perspective-origin: center center;
 }
@@ -184,7 +185,6 @@
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-  margin-bottom: 2rem;
 }
 
 .navButton {
@@ -254,7 +254,6 @@
   overflow: visible;
   max-width: 100dvw;
   border-radius: 10px;
-  flex-grow: 1;
 }
 
 .sketchGallery {
@@ -524,27 +523,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0 2rem;
-}
-
-.footerLeft {
-  display: flex;
-  text-align: left;
-  align-items: center;
   gap: 1rem;
-}
-
-.footerLogo {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 1rem;
-  color: var(--color-accent-secondary);
-  margin: 0;
-}
-
-.footerTagline {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.6rem;
-  color: var(--color-text-secondary);
 }
 
 .footerRight {
@@ -666,4 +645,160 @@
 .headerBackButton:hover {
   background-color: var(--color-accent-secondary-dark);
   box-shadow: 0 0 15px hsla(var(--hue-secondary), 95%, 50%, 0.5);
+}
+
+/* Tablet styles */
+@media (max-width: 768px) {
+  .title {
+    font-size: 4rem;
+  }
+  .titleContainer {
+    height: auto;
+    margin: 1.5rem 0 0 0;
+  }
+
+  .tagline {
+    padding: 1rem 2rem;
+    margin: 0;
+  }
+
+  .navigationLinks {
+    gap: 1rem;
+  }
+
+  .navButton {
+    font-size: 0.85rem;
+  }
+
+  .sketchGalleryContainer {
+    justify-content: center;
+  }
+
+  .sketchGallery {
+    gap: 2rem;
+    padding-top: 1.3rem;
+    flex-grow: 1;
+  }
+
+  /* Footer adjustments */
+  .footer {
+    padding: 1.5rem 1rem;
+  }
+
+  .footerContent {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0rem;
+  }
+
+  .copyright {
+    width: 100%;
+    order: 3;
+    text-align: center;
+    margin-top: 1rem;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+  .titleContainer {
+    padding: 0 1rem;
+    width: 100%;
+  }
+
+  .content {
+    gap: 1.5rem;
+  }
+
+  .tagline {
+    font-size: 0.7rem;
+    letter-spacing: 0;
+    padding: 2rem 0 0 0;
+  }
+
+  .navigationLinks {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+    width: 100%;
+  }
+
+  .navButton {
+    font-size: 0.7rem;
+    padding: 0.8rem;
+  }
+
+  /* Sketch gallery styling */
+  .sketchGalleryContainer {
+    width: 100%;
+    padding: 0;
+    flex-grow: 1;
+  }
+
+  .sketchGallery {
+    width: 100%;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .sketchCard {
+    width: 90%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  /* Footer reorganization */
+  .footer {
+    padding: 1.5rem 0.8rem;
+  }
+
+  .footerContent {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .copyright {
+    width: 100%;
+    text-align: center;
+    font-size: 0.7rem;
+    margin-top: 1rem;
+  }
+
+  /* Make footerRight column */
+  .footerRight {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .footerLink {
+    font-size: 0.8rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 350px) {
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .navigationLinks {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .navButton {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .sketchCard {
+    height: 230px;
+  }
+
+  .footerLink {
+    font-size: 0.7rem;
+  }
 }

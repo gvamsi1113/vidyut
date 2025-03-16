@@ -42,10 +42,6 @@ export default function Home() {
 
       <footer className={styles.footer}>
         <div className={styles.footerContent}>
-          <div className={styles.footerLeft}>
-            <h3 className={styles.footerLogo}>VIDYUT</h3>
-            <p className={styles.footerTagline}>Physics through Play</p>
-          </div>
           <p className={styles.copyright}>© 2025 VIDYUT. All rights reserved.</p>
           <div className={styles.footerRight}>
             <Link href="#" className={styles.footerLink}>
