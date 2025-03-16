@@ -21,12 +21,12 @@ export default function SketchPage() {
   const params = useParams();
   const [activeSketch, setActiveSketch] = useState<Sketch | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  
+
   useEffect(() => {
     // Find the sketch by ID from the URL parameter
     const sketchId = params.id as string;
-    const sketch = SKETCHES.find(s => s.id === sketchId);
-    
+    const sketch = SKETCHES.find((s) => s.id === sketchId);
+
     if (sketch) {
       setActiveSketch(sketch);
     } else {
@@ -34,38 +34,38 @@ export default function SketchPage() {
       router.push('/');
     }
   }, [params, router]);
-  
+
   const handleStart = () => {
     setIsPlaying(true);
   };
-  
+
   const handleReset = () => {
     setIsPlaying(false);
     setTimeout(() => setIsPlaying(true), 100);
   };
-  
+
   const handleBackToHome = () => {
     router.push('/');
   };
-  
+
   if (!activeSketch) {
     return <div className={styles.loading}>Loading...</div>;
   }
-  
+
   return (
     <main className={styles.sketchPage}>
-      <Header 
-        toggleMenu={handleBackToHome} 
-        onStart={handleStart} 
-        onReset={handleReset} 
-        isPlaying={isPlaying} 
+      <Header
+        toggleMenu={handleBackToHome}
+        onStart={handleStart}
+        onReset={handleReset}
+        isPlaying={isPlaying}
       />
-      
+
       <div className={styles.content}>
         <GameScreen activeSketch={activeSketch} isPlaying={isPlaying} />
       </div>
-      
+
       <Footer />
     </main>
   );
-} 
+}

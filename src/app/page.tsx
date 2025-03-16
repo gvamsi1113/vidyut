@@ -1,6 +1,5 @@
 'use client';
 
-// import { useState } from 'react';
 import { Sketch } from '@/types';
 // import BackgroundSketch from '@/components/HomePage/BackgroundSketch';
 import SketchGallery from '@/components/HomePage/SketchGallery';

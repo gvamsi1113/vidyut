@@ -2,33 +2,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1a1a2e;
-  border-bottom: 3px solid #00ddff;
-  padding: 12px 20px;
-  height: 60px;
+  background-color: var(--color-bg-tertiary);
+  border-bottom: 3px solid var(--color-accent-primary);
+  padding: 1rem 1.5rem 1rem;
+  height: auto;
   position: relative;
   z-index: 10;
-  flex-shrink: 0;
-}
-
-.leftSection {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.rightSection {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .title {
   font-family: 'Press Start 2P', cursive;
-  color: #ccff00;
-  font-size: 24px;
+  color: var(--color-text-primary);
+  font-size: 2rem;
   margin: 0;
-  text-shadow: 0 0 8px rgba(0, 221, 255, 0.5);
+  text-shadow: 0 20px 8px var(--color-glow-primary-light);
   position: relative;
   white-space: nowrap;
   overflow: hidden;
@@ -36,88 +24,228 @@
 
 /* Add a pseudo-element for the glitch effect */
 .title::after {
-  content: 'VIDYUT - PHYSICS CONCEPTS in RETRO';
+  content: 'VIDYUT - PHYSICS in RETRO';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   opacity: 0;
-  color: #ffffff;
+  color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   animation: randomGlitch 100s step-end infinite;
 }
 
+.buttonContainer {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.sketchButtons,
+.homeButtons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.navButton {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.875rem;
+  width: auto;
+  color: var(--color-text-black);
+  background-color: var(--color-accent-primary);
+  box-sizing: content-box;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 0 10px hsla(var(--hue-primary), 95%, 50%, 0.5),
+    inset 0 0 10px hsla(0, 0%, 100%, 0.2),
+    0 4px 0 var(--color-accent-primary-darker);
+  position: relative;
+  transform: translateY(0);
+}
+
+/* Alternate color scheme for secondary buttons */
+.navButton.accentButton {
+  background-color: var(--color-accent-secondary);
+  box-shadow:
+    0 0 10px hsla(var(--hue-secondary), 95%, 50%, 0.5),
+    inset 0 0 10px hsla(0, 0%, 100%, 0.2),
+    0 4px 0 var(--color-accent-secondary-darker);
+  color: var(--color-text-primary);
+}
+
+.navButton:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 15px hsla(var(--hue-primary), 95%, 50%, 0.7),
+    inset 0 0 10px hsla(0, 0%, 100%, 0.3),
+    0 6px 0 var(--color-accent-primary-darker);
+}
+
+.navButton.accentButton:hover {
+  box-shadow:
+    0 0 15px hsla(var(--hue-secondary), 95%, 50%, 0.7),
+    inset 0 0 10px hsla(0, 0%, 100%, 0.3),
+    0 6px 0 var(--color-accent-secondary-darker);
+}
+
+.navButton:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 0 10px hsla(var(--hue-primary), 95%, 50%, 0.5),
+    inset 0 0 10px hsla(0, 0%, 100%, 0.2),
+    0 2px 0 var(--color-accent-primary-darker);
+}
+
+.navButton.accentButton:active {
+  box-shadow:
+    0 0 10px hsla(var(--hue-secondary), 95%, 50%, 0.5),
+    inset 0 0 10px hsla(0, 0%, 100%, 0.2),
+    0 2px 0 var(--color-accent-secondary-darker);
+}
 /* Random glitch animation that activates very rarely */
 @keyframes randomGlitch {
   /* Most of the time (97%), no glitch */
-  0%, 2%, 4%, 5%, 7%, 9%, 10%, 12%, 14%, 15%, 17%, 19%, 20%, 22%, 24%, 25%, 27%, 29%,
-  30%, 32%, 34%, 35%, 37%, 39%, 40%, 42%, 44%, 45%, 47%, 49%, 50%, 52%, 54%, 55%, 57%, 59%,
-  60%, 62%, 64%, 65%, 67%, 69%, 70%, 72%, 74%, 75%, 77%, 79%, 80%, 82%, 84%, 85%, 87%, 89%,
-  90%, 92%, 94%, 95%, 97%, 99%, 100% {
+  0%,
+  2%,
+  4%,
+  5%,
+  7%,
+  9%,
+  10%,
+  12%,
+  14%,
+  15%,
+  17%,
+  19%,
+  20%,
+  22%,
+  24%,
+  25%,
+  27%,
+  29%,
+  30%,
+  32%,
+  34%,
+  35%,
+  37%,
+  39%,
+  40%,
+  42%,
+  44%,
+  45%,
+  47%,
+  49%,
+  50%,
+  52%,
+  54%,
+  55%,
+  57%,
+  59%,
+  60%,
+  62%,
+  64%,
+  65%,
+  67%,
+  69%,
+  70%,
+  72%,
+  74%,
+  75%,
+  77%,
+  79%,
+  80%,
+  82%,
+  84%,
+  85%,
+  87%,
+  89%,
+  90%,
+  92%,
+  94%,
+  95%,
+  97%,
+  99%,
+  100% {
     opacity: 0;
     text-shadow: none;
     transform: none;
     clip-path: none;
   }
-  
+
   /* Glitch type 1 - RGB split */
   3% {
     opacity: 1;
     left: -2px;
-    text-shadow: 2px 0 #ff3300, -2px 0 #00ccff;
+    text-shadow:
+      2px 0 #ff3300,
+      -2px 0 #00ccff;
     transform: translateX(1px);
   }
-  
+
   /* Glitch type 2 - horizontal slice */
   13% {
     opacity: 1;
-    text-shadow: -2px 0 #ff00cc, 2px 0 #33ffaa;
+    text-shadow:
+      -2px 0 #ff00cc,
+      2px 0 #33ffaa;
     clip-path: inset(30% 0 30% 0);
   }
-  
+
   /* Glitch type 3 - letter spacing (reduced) */
   23% {
     opacity: 1;
     letter-spacing: 1px;
-    text-shadow: 1px 1px #ffcc00, -1px -1px #00ffaa;
+    text-shadow:
+      1px 1px #ffcc00,
+      -1px -1px #00ffaa;
   }
-  
+
   /* Glitch type 4 - vertical slice */
   33% {
     opacity: 1;
     clip-path: inset(0% 30% 0% 30%);
-    text-shadow: 0 2px #aa00ff, 0 -2px #00ffcc;
+    text-shadow:
+      0 2px #aa00ff,
+      0 -2px #00ffcc;
   }
-  
+
   /* Glitch type 5 - color flash */
   43% {
     opacity: 1;
     color: #ff00aa;
     text-shadow: 0 0 8px #ff00aa;
   }
-  
+
   /* Glitch type 6 - symmetrical offset */
   53% {
     opacity: 1;
-    text-shadow: 3px 3px #ff3300, -3px -3px #00ffff;
+    text-shadow:
+      3px 3px #ff3300,
+      -3px -3px #00ffff;
   }
-  
+
   /* Glitch type 7 - blur */
   63% {
     opacity: 1;
     filter: blur(1px);
     text-shadow: 0 0 5px #ffaa00;
   }
-  
+
   /* Glitch type 8 - symmetrical clip */
   73% {
     opacity: 1;
     clip-path: polygon(0 25%, 100% 25%, 100% 75%, 0 75%);
-    text-shadow: 2px 0 #00ff99, -2px 0 #ff0066;
+    text-shadow:
+      2px 0 #00ff99,
+      -2px 0 #ff0066;
   }
-  
+
   /* Glitch type 9 - subtle shift with color */
   83% {
     opacity: 1;
@@ -125,12 +253,15 @@
     color: #66ffcc;
     text-shadow: 0 0 5px #66ffcc;
   }
-  
+
   /* Glitch type 10 - symmetrical shadow */
   93% {
     opacity: 1;
-    text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff, 
-                 -2px 2px #ffcc00, 2px -2px #00ccff;
+    text-shadow:
+      2px 2px #ff00ff,
+      -2px -2px #00ffff,
+      -2px 2px #ffcc00,
+      2px -2px #00ccff;
   }
 }
 
@@ -152,40 +283,87 @@
 
 @keyframes randomInkBleed {
   /* Most of the time (95%), no effect */
-  0%, 2%, 4%, 6%, 8%, 10%, 12%, 14%, 16%, 18%, 20%, 22%, 24%, 26%, 28%,
-  30%, 32%, 34%, 36%, 38%, 40%, 42%, 44%, 46%, 48%, 50%, 52%, 54%, 56%, 58%,
-  60%, 62%, 64%, 66%, 68%, 70%, 72%, 74%, 76%, 78%, 80%, 82%, 84%, 86%, 88%,
-  90%, 92%, 94%, 96%, 98%, 100% {
+  0%,
+  2%,
+  4%,
+  6%,
+  8%,
+  10%,
+  12%,
+  14%,
+  16%,
+  18%,
+  20%,
+  22%,
+  24%,
+  26%,
+  28%,
+  30%,
+  32%,
+  34%,
+  36%,
+  38%,
+  40%,
+  42%,
+  44%,
+  46%,
+  48%,
+  50%,
+  52%,
+  54%,
+  56%,
+  58%,
+  60%,
+  62%,
+  64%,
+  66%,
+  68%,
+  70%,
+  72%,
+  74%,
+  76%,
+  78%,
+  80%,
+  82%,
+  84%,
+  86%,
+  88%,
+  90%,
+  92%,
+  94%,
+  96%,
+  98%,
+  100% {
     opacity: 0;
     text-shadow: none;
     transform: none;
   }
-  
+
   /* Random ink bleed colors */
   5% {
     opacity: 0.5;
     text-shadow: 0 0 5px rgba(255, 0, 102, 0.8);
     transform: translateX(-1px) translateY(1px);
   }
-  
+
   25% {
     opacity: 0.4;
     text-shadow: 0 0 7px rgba(0, 255, 204, 0.8);
     transform: translateX(1px) translateY(-1px);
   }
-  
+
   45% {
     opacity: 0.6;
     text-shadow: 0 0 6px rgba(255, 204, 0, 0.8);
     transform: translateX(-1px) translateY(-1px);
   }
-  
+
   65% {
     opacity: 0.5;
     text-shadow: 0 0 8px rgba(153, 51, 255, 0.8);
     transform: translateX(1px) translateY(1px);
   }
-  
+
   85% {
     opacity: 0.7;
     text-shadow: 0 0 9px rgba(0, 204, 255, 0.8);
@@ -193,139 +371,60 @@
   }
 }
 
-.menuButton {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 12px;
-  background-color: #ff00ff;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 8px rgba(255, 0, 255, 0.5);
-}
-
-.menuButton:hover {
-  background-color: #d400d4;
-  transform: translateY(-2px);
-  box-shadow: 0 0 12px rgba(255, 0, 255, 0.7);
-}
-
-.menuButton:active {
-  transform: translateY(0);
-}
-
-.startButton {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 12px;
-  background-color: #9500ff;
-  color: #1a1a2e;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 8px rgba(0, 221, 255, 0.5);
-  font-weight: bold;
-}
-
-.startButton:hover:not(:disabled) {
-  background-color: #7500d4;
-  transform: translateY(-2px);
-  box-shadow: 0 0 12px rgba(0, 221, 255, 0.7);
-}
-
-.startButton:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.startButton:disabled {
-  background-color: #555;
-  cursor: not-allowed;
-  opacity: 0.7;
-  box-shadow: none;
-}
-
-.resetButton {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 12px;
-  background-color: #ff0066;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 8px rgba(255, 0, 102, 0.5);
-}
-
-.resetButton:hover {
-  background-color: #d40055;
-  transform: translateY(-2px);
-  box-shadow: 0 0 12px rgba(255, 0, 102, 0.7);
-}
-
-.resetButton:active {
-  transform: translateY(0);
-}
-
 @media (max-width: 768px) {
   .header {
-    padding: 10px 15px;
-    height: 50px;
+    padding: 1rem 1.5rem 1.5rem;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
   }
-  
+
   .title {
-    font-size: 12px;
+    font-size: 2rem;
   }
-  
-  .menuButton, .startButton, .resetButton {
-    font-size: 10px;
-    padding: 6px 10px;
+
+  .menuButton,
+  .startButton,
+  .resetButton,
+  .navButton,
+  .accentButton {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
   }
-  
-  .leftSection {
-    gap: 12px;
+
+  .homeButtons,
+  .sketchButtons {
+    gap: 0.5rem;
+  }
+
+  .buttonContainer {
+    gap: 0.5rem;
+    justify-content: center;
   }
 }
 
 @media (max-width: 480px) {
   .title {
-    font-size: 10px;
+    font-size: 1.5rem;
   }
-  
-  .menuButton, .startButton, .resetButton {
-    font-size: 8px;
-    padding: 5px 8px;
+
+  .menuButton,
+  .startButton,
+  .resetButton,
+  .navButton,
+  .accentButton {
+    font-size: 0.65rem;
+    padding: 0.4rem 0.6rem;
   }
-}
-
-.powerIndicator {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.powerLed {
-  width: 0.75rem;
-  height: 0.75rem;
-  background-color: #dc2626;
-  border-radius: 50%;
-  animation: ledBlink 2s infinite;
-}
-
-.powerLabel {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.75rem;
-  color: #9ca3af;
 }
 
 @keyframes ledBlink {
-  0%, 49% {
+  0%,
+  49% {
     opacity: 1;
   }
-  50%, 100% {
+  50%,
+  100% {
     opacity: 0.6;
   }
-} 
+}

@@ -2,17 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1a1a2e;
-  border-top: 2px solid #00ddff;
+  background-color: var(--color-bg-tertiary);
+  border-top: 2px solid var(--color-accent-primary);
   padding: 10px 20px;
-  height: 40px; /* Fixed height */
   font-size: 12px;
-  color: #9ca3af;
-  flex-shrink: 0; /* Prevent shrinking */
+  color: var(--color-text-muted);
+  flex-shrink: 0;
 }
 
 .footerText {
   font-family: 'Press Start 2P', cursive;
   font-size: 8px;
-  color: #6b7280; /* gray-500 */
-} 
+  color: var(--color-text-muted);
+}
