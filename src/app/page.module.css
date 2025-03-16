@@ -73,7 +73,7 @@
   justify-content: flex-end;
   flex: 1;
   width: 100%;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 /* ===== TITLE STYLING ===== */
@@ -258,7 +258,6 @@
 
 .sketchGallery {
   display: flex;
-  flex-grow: 1;
   gap: 2rem;
   padding: 2rem;
   overflow-x: visible;
@@ -269,6 +268,7 @@
   position: relative;
   align-items: center;
   overflow-y: hidden;
+  margin-bottom: 1rem;
 }
 
 /* Hide scrollbar but keep functionality */
@@ -658,7 +658,7 @@
   }
 
   .tagline {
-    padding: 1rem 2rem;
+    padding: 1rem 2rem 0;
     margin: 0;
   }
 
@@ -670,14 +670,8 @@
     font-size: 0.85rem;
   }
 
-  .sketchGalleryContainer {
-    justify-content: center;
-  }
-
   .sketchGallery {
-    gap: 2rem;
-    padding-top: 1.3rem;
-    flex-grow: 1;
+    padding: 1rem 2rem 2rem;
   }
 
   /* Footer adjustments */
@@ -704,6 +698,10 @@
   .titleContainer {
     padding: 0 1rem;
     width: 100%;
+  }
+
+  .title {
+    font-size: 3.5rem;
   }
 
   .content {
@@ -733,19 +731,10 @@
   .sketchGalleryContainer {
     width: 100%;
     padding: 0;
-    flex-grow: 1;
-  }
-
-  .sketchGallery {
-    width: 100%;
-    gap: 1.5rem;
-    padding: 1rem;
   }
 
   .sketchCard {
-    width: 90%;
-    max-width: 280px;
-    margin: 0 auto;
+    height: 300px;
   }
 
   /* Footer reorganization */
