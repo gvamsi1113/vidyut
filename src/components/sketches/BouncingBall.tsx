@@ -4,12 +4,12 @@
 import React, { useMemo } from 'react';
 import { ControlSettings } from '@/types';
 import P5Wrapper from './P5Wrapper/P5Wrapper';
-import { 
-  createSketch, 
-  createSliderControl, 
+import {
+  createSketch,
+  createSliderControl,
   createToggleControl,
   addGlowEffect,
-  SketchContext
+  SketchContext,
 } from '@/utils/p5SketchSystem';
 
 interface Ball {
@@ -21,22 +21,22 @@ interface Ball {
   color: number[];
 }
 
-const BouncingBall: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
+const BouncingBall: React.FC<ControlSettings> = ({ speed = 5, size = 5, isPlaying = true }) => {
   const sketch = useMemo(() => {
     return createSketch(
-      { 
-        speed, 
+      {
+        speed,
         size,
         controlPanel: {
           theme: 'retro',
           position: 'bottom-left',
-          title: 'BOUNCING BALL'
-        }
+          title: 'BOUNCING BALL',
+        },
       },
       // Setup function
       (ctx: SketchContext) => {
         const { p, controlPanel, settings } = ctx;
-        
+
         // Initial ball state
         const ball: Ball = {
           x: p.width / 2,
@@ -46,10 +46,10 @@ const BouncingBall: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
           speedY: 2 + (settings?.speed ?? 5) / 2,
           color: [255, 50, 200],
         };
-        
+
         // Register ball in context
         ctx.registerControl('ball', ball);
-        
+
         // Create UI controls
         if (controlPanel) {
           // Speed control
@@ -61,13 +61,13 @@ const BouncingBall: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
             10,
             ball.speedX,
             0.1,
-            val => val.toFixed(1),
-            value => {
+            (val) => val.toFixed(1),
+            (value) => {
               ball.speedX = value * Math.sign(ball.speedX);
               ball.speedY = value * Math.sign(ball.speedY);
             }
           );
-          
+
           // Size control
           const sizeControl = createSliderControl(
             p,
@@ -77,12 +77,12 @@ const BouncingBall: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
             100,
             ball.size,
             1,
-            val => val.toFixed(0),
-            value => {
+            (val) => val.toFixed(0),
+            (value) => {
               ball.size = value;
             }
           );
-          
+
           // Toggle button
           const toggleControls = createToggleControl(
             p,
@@ -90,56 +90,51 @@ const BouncingBall: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
             'HIDE CONTROLS',
             'SHOW CONTROLS',
             true,
-            [
-              speedControl.slider,
-              speedControl.labelEl,
-              sizeControl.slider,
-              sizeControl.labelEl
-            ]
+            [speedControl.slider, speedControl.labelEl, sizeControl.slider, sizeControl.labelEl]
           );
-          
+
           // Register controls for access in draw
           ctx.registerControl('speedControl', speedControl);
           ctx.registerControl('sizeControl', sizeControl);
           ctx.registerControl('toggleControls', toggleControls);
         }
       },
-      
+
       // Draw function
       (ctx: SketchContext) => {
         const { p } = ctx;
         const ball = ctx.getControl<Ball>('ball');
-        
+
         if (!ball) return;
-        
+
         // Background with trail effect
         p.background(0, 20);
-        
+
         // Draw ball
         p.noStroke();
         p.fill(ball.color[0], ball.color[1], ball.color[2]);
         p.ellipse(ball.x, ball.y, ball.size);
-        
+
         // Add glow effect
         addGlowEffect(p, ball.color);
-        
+
         // Update position
         ball.x += ball.speedX;
         ball.y += ball.speedY;
-        
+
         // Bounce off walls
         if (ball.x > p.width - ball.size / 2 || ball.x < ball.size / 2) {
           ball.speedX *= -1;
           // Change color on bounce
           ball.color = [p.random(100, 255), p.random(50, 200), p.random(100, 255)];
         }
-        
+
         if (ball.y > p.height - ball.size / 2 || ball.y < ball.size / 2) {
           ball.speedY *= -1;
           // Change color on bounce
           ball.color = [p.random(100, 255), p.random(50, 200), p.random(100, 255)];
         }
-        
+
         // Display info
         p.fill(255);
         p.noStroke();
@@ -152,7 +147,7 @@ const BouncingBall: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
     );
   }, [speed, size]);
 
-  return <P5Wrapper sketch={sketch} />;
+  return <P5Wrapper sketch={sketch} isPlaying={isPlaying} />;
 };
 
 export default BouncingBall;

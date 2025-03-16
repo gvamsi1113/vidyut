@@ -5,11 +5,11 @@ import React, { useMemo } from 'react';
 import p5 from 'p5';
 import { ControlSettings } from '@/types';
 import P5Wrapper from './P5Wrapper/P5Wrapper';
-import { 
-  createSketch, 
-  createSliderControl, 
+import {
+  createSketch,
+  createSliderControl,
   createToggleControl,
-  SketchContext
+  SketchContext,
 } from '@/utils/p5SketchSystem';
 
 interface Particle {
@@ -33,22 +33,22 @@ interface ParticleSystemSettings {
   particles: Particle[];
 }
 
-const ParticleSystem: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
+const ParticleSystem: React.FC<ControlSettings> = ({ speed = 5, size = 5, isPlaying = true }) => {
   const sketch = useMemo(() => {
     return createSketch(
-      { 
-        speed, 
+      {
+        speed,
         size,
         controlPanel: {
           theme: 'retro',
           position: 'bottom-left',
-          title: 'PARTICLE SYSTEM'
-        }
+          title: 'PARTICLE SYSTEM',
+        },
       },
       // Setup function
       (ctx: SketchContext) => {
         const { p, controlPanel, settings } = ctx;
-        
+
         // Create Particle class with explicit type
         const ParticleClass = class implements Particle {
           position: p5.Vector;
@@ -113,13 +113,13 @@ const ParticleSystem: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
             return this.life <= 0;
           }
         };
-        
+
         // Initialize particle system
         const particleSystem: ParticleSystemSettings = {
           maxSpeed: 0.5 + (settings?.speed ?? 5) * 0.2,
           particleCount: 50 + (settings?.size ?? 5) * 10,
           baseSize: 4 + (settings?.size ?? 5) * 0.5,
-          particles: []
+          particles: [],
         };
         // Create initial particles
         for (let i = 0; i < particleSystem.particleCount; i++) {
@@ -127,11 +127,11 @@ const ParticleSystem: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
             new ParticleClass(particleSystem.maxSpeed, particleSystem.baseSize)
           );
         }
-        
+
         // Register particle system and constructor for later use
         ctx.registerControl('particleSystem', particleSystem);
         ctx.registerControl('ParticleClass', ParticleClass);
-        
+
         // Create UI controls
         if (controlPanel) {
           // Speed control
@@ -143,12 +143,12 @@ const ParticleSystem: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
             2,
             particleSystem.maxSpeed,
             0.1,
-            val => val.toFixed(1),
-            value => {
+            (val) => val.toFixed(1),
+            (value) => {
               particleSystem.maxSpeed = value;
             }
           );
-          
+
           // Count control
           const countControl = createSliderControl(
             p,
@@ -158,10 +158,10 @@ const ParticleSystem: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
             200,
             particleSystem.particleCount,
             10,
-            val => val.toFixed(0),
-            value => {
+            (val) => val.toFixed(0),
+            (value) => {
               particleSystem.particleCount = value;
-              
+
               // Adjust particle count (add or remove)
               const ParticleConstructor = ctx.getControl<typeof ParticleClass>('ParticleClass');
               if (ParticleConstructor) {
@@ -171,7 +171,7 @@ const ParticleSystem: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
                     new ParticleConstructor(particleSystem.maxSpeed, particleSystem.baseSize)
                   );
                 }
-                
+
                 // Remove particles if needed
                 if (particleSystem.particles.length > particleSystem.particleCount) {
                   particleSystem.particles.length = particleSystem.particleCount;
@@ -179,7 +179,7 @@ const ParticleSystem: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
               }
             }
           );
-          
+
           // Toggle button
           const toggleControls = createToggleControl(
             p,
@@ -187,62 +187,58 @@ const ParticleSystem: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
             'HIDE CONTROLS',
             'SHOW CONTROLS',
             true,
-            [
-              speedControl.slider,
-              speedControl.labelEl,
-              countControl.slider,
-              countControl.labelEl
-            ]
+            [speedControl.slider, speedControl.labelEl, countControl.slider, countControl.labelEl]
           );
-          
+
           // Register controls
           ctx.registerControl('speedControl', speedControl);
           ctx.registerControl('countControl', countControl);
           ctx.registerControl('toggleControls', toggleControls);
         }
       },
-      
+
       // Draw function
       (ctx: SketchContext) => {
         const { p } = ctx;
         const particleSystem = ctx.getControl<ParticleSystemSettings>('particleSystem');
-        const ParticleClass = ctx.getControl<new (maxSpeed: number, baseSize: number) => Particle>('ParticleClass');
-        
+        const ParticleClass =
+          ctx.getControl<new (maxSpeed: number, baseSize: number) => Particle>('ParticleClass');
+
         if (!particleSystem || !ParticleClass) return;
-        
+
         // Background with trail effect
         p.background(0, 40);
-        
+
         // Create a force towards the mouse when pressed
         if (p.mouseIsPressed) {
           const mouseForce = p.createVector(p.mouseX, p.mouseY);
-          
+
           for (const particle of particleSystem.particles) {
             // Calculate direction from particle to mouse
             const force = p5.Vector.sub(mouseForce, particle.position);
             force.normalize();
             force.mult(0.5); // Strength of attraction
-            
+
             // Apply force to particle
             particle.applyForce(force);
           }
         }
-        
+
         // Update and display particles
         for (let i = particleSystem.particles.length - 1; i >= 0; i--) {
           particleSystem.particles[i].update();
           particleSystem.particles[i].edges();
           particleSystem.particles[i].display(p);
-          
+
           // Replace dead particles
           if (particleSystem.particles[i].isDead()) {
             particleSystem.particles[i] = new ParticleClass(
-              particleSystem.maxSpeed, 
+              particleSystem.maxSpeed,
               particleSystem.baseSize
             );
           }
         }
-        
+
         // Display info
         p.fill(255);
         p.noStroke();
@@ -255,7 +251,7 @@ const ParticleSystem: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
     );
   }, [speed, size]); // Only recreate when speed or size change
 
-  return <P5Wrapper sketch={sketch} />;
+  return <P5Wrapper sketch={sketch} isPlaying={isPlaying} />;
 };
 
 export default ParticleSystem;

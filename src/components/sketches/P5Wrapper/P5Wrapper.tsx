@@ -7,9 +7,10 @@ import styles from './P5Wrapper.module.css';
 
 interface P5WrapperProps {
   sketch: (p: p5) => void;
+  isPlaying: boolean;
 }
 
-const P5Wrapper: React.FC<P5WrapperProps> = ({ sketch }) => {
+const P5Wrapper: React.FC<P5WrapperProps> = ({ sketch, isPlaying }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const p5Ref = useRef<p5 | null>(null);
 
@@ -48,6 +49,23 @@ const P5Wrapper: React.FC<P5WrapperProps> = ({ sketch }) => {
       resizeObserver.disconnect();
     };
   }, [sketch]);
+
+  // Handle play/pause state
+  useEffect(() => {
+    if (!p5Ref.current) return;
+
+    if (isPlaying) {
+      // Resume the sketch's loop if it was previously paused
+      if (p5Ref.current.isLooping() === false) {
+        p5Ref.current.loop();
+      }
+    } else {
+      // Pause the sketch by stopping the draw loop
+      if (p5Ref.current.isLooping() === true) {
+        p5Ref.current.noLoop();
+      }
+    }
+  }, [isPlaying]);
 
   return <div ref={containerRef} className={styles.p5Container} />;
 };

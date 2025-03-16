@@ -4,11 +4,9 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Header from '@/components/Header/Header';
 import GameScreen from '@/components/GameScreen/GameScreen';
-import Footer from '@/components/Footer/Footer';
 import { Sketch } from '@/types';
 import styles from './SketchPage.module.css';
 
-// Sample sketch data (same as in homepage)
 const SKETCHES: Sketch[] = [
   { id: 'bouncing-ball', title: 'Bouncing Ball', difficulty: 'Easy' },
   { id: 'wave-patterns', title: 'Wave Patterns', difficulty: 'Medium' },
@@ -23,14 +21,12 @@ export default function SketchPage() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    // Find the sketch by ID from the URL parameter
     const sketchId = params.id as string;
     const sketch = SKETCHES.find((s) => s.id === sketchId);
 
     if (sketch) {
       setActiveSketch(sketch);
     } else {
-      // Redirect to homepage if sketch not found
       router.push('/');
     }
   }, [params, router]);
@@ -39,13 +35,32 @@ export default function SketchPage() {
     setIsPlaying(true);
   };
 
-  const handleReset = () => {
+  const handlePause = () => {
     setIsPlaying(false);
-    setTimeout(() => setIsPlaying(true), 100);
   };
 
   const handleBackToHome = () => {
     router.push('/');
+  };
+
+  const handlePrevious = () => {
+    if (!activeSketch) return;
+
+    const currentIndex = SKETCHES.findIndex((s) => s.id === activeSketch.id);
+    // If first sketch, go to the last sketch; otherwise go to previous
+    const prevIndex = currentIndex <= 0 ? SKETCHES.length - 1 : currentIndex - 1;
+    const prevSketch = SKETCHES[prevIndex];
+    router.push(`/sketch/${prevSketch.id}`);
+  };
+
+  const handleNext = () => {
+    if (!activeSketch) return;
+
+    const currentIndex = SKETCHES.findIndex((s) => s.id === activeSketch.id);
+    // If last sketch, go to the first sketch; otherwise go to next
+    const nextIndex = currentIndex >= SKETCHES.length - 1 ? 0 : currentIndex + 1;
+    const nextSketch = SKETCHES[nextIndex];
+    router.push(`/sketch/${nextSketch.id}`);
   };
 
   if (!activeSketch) {
@@ -57,15 +72,16 @@ export default function SketchPage() {
       <Header
         toggleMenu={handleBackToHome}
         onStart={handleStart}
-        onReset={handleReset}
+        onPause={handlePause}
         isPlaying={isPlaying}
+        activeSketch={activeSketch}
+        onPrevious={handlePrevious}
+        onNext={handleNext}
       />
 
       <div className={styles.content}>
         <GameScreen activeSketch={activeSketch} isPlaying={isPlaying} />
       </div>
-
-      <Footer />
     </main>
   );
 }

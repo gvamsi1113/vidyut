@@ -3,65 +3,77 @@
 import React from 'react';
 import styles from './Header.module.css';
 import { useRouter } from 'next/navigation';
+import { Sketch } from '@/types';
 
 interface HeaderProps {
   toggleMenu: () => void;
   onStart: () => void;
-  onReset: () => void;
+  onPause: () => void;
   isPlaying: boolean;
+  activeSketch: Sketch;
+  onPrevious: () => void;
+  onNext: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ toggleMenu, onStart, onReset, isPlaying }) => {
+const Header: React.FC<HeaderProps> = ({
+  toggleMenu,
+  onStart,
+  onPause,
+  isPlaying,
+  activeSketch,
+  onPrevious,
+  onNext,
+}) => {
   const router = useRouter();
 
   const handleHomeClick = () => {
     router.push('/');
   };
 
-  const handleContributeClick = () => {
-    // Navigate to contribute page or open modal
-  };
-
-  const handleContactClick = () => {
-    // Navigate to contact page or open modal
-  };
-
   return (
     <header className={styles.header}>
-      <h1 className={styles.title} onClick={handleHomeClick}>
-        VIDYUT
-      </h1>
+      <div className={styles.titleContainer}>
+        <h1 className={styles.title} onClick={handleHomeClick}>
+          VIDYUT
+        </h1>
+        {activeSketch && <h2 className={styles.sketchTitle}>- {activeSketch.title}</h2>}
+      </div>
 
       <div className={styles.buttonContainer}>
-        <div className={styles.homeButtons}>
-          <button
-            onClick={handleContributeClick}
-            className={`${styles.navButton} ${styles.accentButton}`}
-          >
-            CONTRIBUTE
-          </button>
-          <button
-            onClick={handleContactClick}
-            className={`${styles.navButton} ${styles.accentButton}`}
-          >
-            CONTACT
-          </button>
-        </div>
-
         <div className={styles.sketchButtons}>
+          <button
+            onClick={onPrevious}
+            className={`${styles.navButton} ${styles.accentButton} ${styles.iconButton}`}
+          >
+            &lt;
+          </button>
+
           <button onClick={toggleMenu} className={styles.navButton}>
             MENU
           </button>
 
           {!isPlaying ? (
-            <button onClick={onStart} className={`${styles.navButton} ${styles.startButton}`}>
-              START
+            <button
+              onClick={onStart}
+              className={`${styles.navButton} ${styles.startButton} ${styles.iconButton}`}
+            >
+              &#9658;
             </button>
           ) : (
-            <button onClick={onReset} className={`${styles.navButton} ${styles.resetButton}`}>
-              RESET
+            <button
+              onClick={onPause}
+              className={`${styles.navButton} ${styles.pauseButton} ${styles.iconButton}`}
+            >
+              &#10074;&#10074;
             </button>
           )}
+
+          <button
+            onClick={onNext}
+            className={`${styles.navButton} ${styles.accentButton} ${styles.iconButton}`}
+          >
+            &gt;
+          </button>
         </div>
       </div>
     </header>

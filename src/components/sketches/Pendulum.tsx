@@ -4,13 +4,13 @@ import React, { useMemo } from 'react';
 import p5 from 'p5';
 import { ControlSettings } from '@/types';
 import P5Wrapper from './P5Wrapper/P5Wrapper';
-import { 
-  createSketch, 
-  createSliderControl, 
+import {
+  createSketch,
+  createSliderControl,
   createToggleControl,
   addGlowEffect,
   createTrailManager,
-  SketchContext
+  SketchContext,
 } from '@/utils/p5SketchSystem';
 
 interface PendulumState {
@@ -25,22 +25,22 @@ interface PendulumState {
   color: number[];
 }
 
-const Pendulum: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
+const Pendulum: React.FC<ControlSettings> = ({ speed = 5, size = 5, isPlaying = true }) => {
   const sketch = useMemo(() => {
     return createSketch(
-      { 
-        speed, 
+      {
+        speed,
         size,
         controlPanel: {
           theme: 'retro',
           position: 'bottom-left',
-          title: 'PENDULUM PHYSICS'
-        }
+          title: 'PENDULUM PHYSICS',
+        },
       },
       // Setup function
       (ctx: SketchContext) => {
         const { p, controlPanel, settings } = ctx;
-        
+
         // Create initial pendulum state
         const pendulum: PendulumState = {
           gravity: 0.4 + (settings?.speed ?? 5) * 0.05,
@@ -51,16 +51,16 @@ const Pendulum: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
           angleVelocity: 0,
           angleAcceleration: 0,
           origin: p.createVector(p.width / 2, p.height / 4),
-          color: [255, 50, 150]
+          color: [255, 50, 150],
         };
-        
+
         // Create trail manager
         const trail = createTrailManager<p5.Vector>(50);
-        
+
         // Store in context
         ctx.registerControl('pendulum', pendulum);
         ctx.registerControl('trail', trail);
-        
+
         // Create UI controls
         if (controlPanel) {
           // Gravity control
@@ -72,12 +72,12 @@ const Pendulum: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
             1.5,
             pendulum.gravity,
             0.05,
-            val => val.toFixed(2),
-            value => {
+            (val) => val.toFixed(2),
+            (value) => {
               pendulum.gravity = value;
             }
           );
-          
+
           // Length control
           const lengthControl = createSliderControl(
             p,
@@ -87,13 +87,13 @@ const Pendulum: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
             300,
             pendulum.length,
             10,
-            val => val.toFixed(0),
-            value => {
+            (val) => val.toFixed(0),
+            (value) => {
               pendulum.length = value;
               pendulum.bobSize = pendulum.length * 0.15;
             }
           );
-          
+
           // Toggle button
           const toggleControls = createToggleControl(
             p,
@@ -105,46 +105,46 @@ const Pendulum: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
               gravityControl.slider,
               gravityControl.labelEl,
               lengthControl.slider,
-              lengthControl.labelEl
+              lengthControl.labelEl,
             ]
           );
-          
+
           // Register controls
           ctx.registerControl('gravityControl', gravityControl);
           ctx.registerControl('lengthControl', lengthControl);
           ctx.registerControl('toggleControls', toggleControls);
         }
       },
-      
+
       // Draw function
       (ctx: SketchContext) => {
         const { p } = ctx;
-        
+
         const pendulum = ctx.getControl<PendulumState>('pendulum');
         const trail = ctx.getControl<{
           add: (point: p5.Vector) => void;
           getPoints: () => p5.Vector[];
         }>('trail');
-        
+
         if (!pendulum || !trail) return;
-        
+
         // Background with trail effect
         p.background(0, 40);
-        
+
         // Physics calculations
-        pendulum.angleAcceleration = 
+        pendulum.angleAcceleration =
           ((-1 * pendulum.gravity) / pendulum.length) * p.sin(pendulum.angle);
         pendulum.angleVelocity += pendulum.angleAcceleration;
         pendulum.angleVelocity *= pendulum.dampening;
         pendulum.angle += pendulum.angleVelocity;
-        
+
         // Calculate bob position
         const bobX = pendulum.origin.x + pendulum.length * p.sin(pendulum.angle);
         const bobY = pendulum.origin.y + pendulum.length * p.cos(pendulum.angle);
-        
+
         // Add to trail
         trail.add(p.createVector(bobX, bobY));
-        
+
         // Draw trail
         p.noFill();
         p.beginShape();
@@ -156,25 +156,25 @@ const Pendulum: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
           p.vertex(points[i].x, points[i].y);
         }
         p.endShape();
-        
+
         // Draw pendulum arm
         p.stroke(200);
         p.strokeWeight(2);
         p.line(pendulum.origin.x, pendulum.origin.y, bobX, bobY);
-        
+
         // Draw origin point
         p.fill(200);
         p.noStroke();
         p.ellipse(pendulum.origin.x, pendulum.origin.y, 10, 10);
-        
+
         // Draw pendulum bob
         p.fill(pendulum.color[0], pendulum.color[1], pendulum.color[2]);
         p.noStroke();
         p.ellipse(bobX, bobY, pendulum.bobSize, pendulum.bobSize);
-        
+
         // Add glow effect
         addGlowEffect(p, pendulum.color);
-        
+
         // Display physics info
         p.fill(255);
         p.noStroke();
@@ -183,26 +183,26 @@ const Pendulum: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
         p.text(`Angle: ${p.nf(pendulum.angle, 1, 2)}`, 20, 30);
         p.text(`Velocity: ${p.nf(pendulum.angleVelocity, 1, 4)}`, 20, 50);
         p.text(`Gravity: ${p.nf(pendulum.gravity, 1, 2)}`, 20, 70);
-        
+
         // Handle user interaction - drag pendulum
         if (p.mouseIsPressed) {
           const mouseVec = p.createVector(p.mouseX, p.mouseY);
           const originVec = p.createVector(pendulum.origin.x, pendulum.origin.y);
-          
+
           // Calculate angle from mouse position
           const v = p5.Vector.sub(mouseVec, originVec);
           pendulum.angle = p.atan2(v.x, v.y);
-          
+
           // Reset velocity when dragging
           pendulum.angleVelocity = 0;
         }
       },
-      
+
       // Resize function
       (ctx: SketchContext) => {
         const { p } = ctx;
         const pendulum = ctx.getControl<PendulumState>('pendulum');
-        
+
         if (pendulum) {
           pendulum.origin = p.createVector(p.width / 2, p.height / 4);
         }
@@ -210,7 +210,7 @@ const Pendulum: React.FC<ControlSettings> = ({ speed = 5, size = 5 }) => {
     );
   }, [speed, size]); // Only recreate when speed or size change
 
-  return <P5Wrapper sketch={sketch} />;
+  return <P5Wrapper sketch={sketch} isPlaying={isPlaying} />;
 };
 
 export default Pendulum;

@@ -26,10 +26,12 @@ interface GameScreenProps {
 
 const GameScreen: React.FC<GameScreenProps> = ({ activeSketch, isPlaying }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [hasStartedOnce, setHasStartedOnce] = useState(false);
 
   // Handle sketch loading
   useEffect(() => {
     setIsLoading(true);
+    setHasStartedOnce(false); // Reset when sketch changes
 
     // Simulate loading time
     const timer = setTimeout(() => {
@@ -38,6 +40,13 @@ const GameScreen: React.FC<GameScreenProps> = ({ activeSketch, isPlaying }) => {
 
     return () => clearTimeout(timer);
   }, [activeSketch]);
+
+  // Track if sketch has been started at least once
+  useEffect(() => {
+    if (isPlaying && !hasStartedOnce) {
+      setHasStartedOnce(true);
+    }
+  }, [isPlaying, hasStartedOnce]);
 
   // Render the active sketch
   const renderSketch = () => {
@@ -53,7 +62,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ activeSketch, isPlaying }) => {
       );
     }
 
-    return <SketchComponent />;
+    return <SketchComponent isPlaying={isPlaying} />;
   };
 
   return (
@@ -66,16 +75,18 @@ const GameScreen: React.FC<GameScreenProps> = ({ activeSketch, isPlaying }) => {
           </div>
           <p className={`${styles.loadingText} ${styles.blink}`}>PLEASE WAIT</p>
         </div>
-      ) : !isPlaying ? (
+      ) : hasStartedOnce || isPlaying ? (
+        // If sketch has started at least once OR is currently playing, show the sketch
+        renderSketch()
+      ) : (
+        // Otherwise show the ready container
         <div className={styles.readyContainer}>
           <p className={styles.readyText}>{activeSketch.title} READY</p>
           <p className={`${styles.readyText} ${styles.blink}`}>PRESS START TO PLAY</p>
         </div>
-      ) : (
-        renderSketch()
       )}
     </div>
   );
 };
 
-export default GameScreen; 
+export default GameScreen;

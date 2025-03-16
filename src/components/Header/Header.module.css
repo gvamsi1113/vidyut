@@ -428,3 +428,70 @@
     opacity: 0.6;
   }
 }
+
+/* Add these styles */
+.titleContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sketchTitle {
+  font-family: 'Press Start 2P', cursive;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  margin: 0;
+  text-shadow: 0 12px 8px var(--color-glow-primary-light);
+}
+
+/* Update responsive styles for the title container */
+@media (max-width: 768px) {
+  .titleContainer {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .sketchTitle {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sketchTitle {
+    font-size: 0.65rem;
+  }
+}
+
+/* Add these styles for the icon buttons */
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+}
+
+.pauseButton {
+  background-color: var(--color-warning);
+  box-shadow:
+    0 0 10px hsla(48, 95%, 53%, 0.5),
+    inset 0 0 10px hsla(0, 0%, 100%, 0.2),
+    0 4px 0 hsl(48, 95%, 40%);
+  color: var(--color-text-black);
+}
+
+/* Adjust line height for the pause icon to position it better */
+.pauseButton span {
+  line-height: 0.8;
+}
+
+/* Style hover effects */
+.iconButton:hover {
+  transform: translateY(-2px);
+}
+
+.iconButton:active {
+  transform: translateY(0px);
+}
